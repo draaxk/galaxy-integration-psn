@@ -5,8 +5,7 @@ from typing import List, Any, AsyncGenerator
 from galaxy.api.consts import Platform, LicenseType
 from galaxy.api.errors import InvalidCredentials
 from galaxy.api.plugin import Plugin, create_and_run_plugin
-from galaxy.api.types import Authentication, Game, NextStep, SubscriptionGame, \
-    Subscription, LicenseInfo
+from galaxy.api.types import Authentication, Game, Achievement, NextStep, SubscriptionGame, Subscription, LicenseInfo
 
 from http_client import HttpClient
 from http_client import OAUTH_LOGIN_URL, OAUTH_LOGIN_REDIRECT_URL
@@ -40,13 +39,14 @@ class PSNPlugin(Plugin):
         self._http_client.set_cookies_updated_callback(self._update_stored_cookies)
         self._http_client.update_cookies(cookies)
         await self._http_client.refresh_cookies()
-        user_id, user_name = await self._psn_client.async_get_own_user_info()
-        if user_id == "":
+        self._user_id, user_name = await self._psn_client.async_get_own_user_info()
+        if self._user_id == "":
             raise InvalidCredentials()
-        return Authentication(user_id=user_id, user_name=user_name)
+
+        return Authentication(user_id=self._user_id, user_name=user_name)
 
     async def authenticate(self, stored_credentials=None):
-        stored_cookies = stored_credentials.get("cookies") if stored_credentials else None
+        stored_cookies = stored_credentials.get("cookies") if stored_credentials else None        
         if not stored_cookies:
             return NextStep("web_session", AUTH_PARAMS)
 
@@ -59,9 +59,7 @@ class PSNPlugin(Plugin):
         return await self._do_auth(cookies)
 
     def _store_cookies(self, cookies):
-        credentials = {
-            "cookies": cookies
-        }
+        credentials = {"cookies": cookies}
         self.store_credentials(credentials)
 
     def _update_stored_cookies(self, morsels):
@@ -72,7 +70,13 @@ class PSNPlugin(Plugin):
 
     async def get_subscriptions(self) -> List[Subscription]:
         is_plus_active = await self._psn_client.get_psplus_status()
-        return [Subscription(subscription_name="PlayStation PLUS", end_time=None, owned=is_plus_active)]
+        return [
+            Subscription(
+                subscription_name="PlayStation PLUS",
+                end_time=None,
+                owned=is_plus_active,
+            )
+        ]
 
     async def get_subscription_games(self, subscription_name: str, context: Any) -> AsyncGenerator[List[SubscriptionGame], None]:
         yield await self._psn_client.get_subscription_games()
@@ -87,12 +91,33 @@ class PSNPlugin(Plugin):
             )
 
         def parse_played_games(titles):
-            return [{"titleId": title["titleId"], "name": title["name"]} for title in titles]
+            return [
+                {"titleId": title["titleId"], "name": title["name"], "platform": title["platform"]} for title in titles
+            ]
 
         purchased_games = await self._psn_client.async_get_purchased_games()
-        played_games = parse_played_games(await self._psn_client.async_get_played_games())
-        unique_all_games = {game['titleId']: game for game in played_games + purchased_games}.values()
+        played_games = parse_played_games(
+            await self._psn_client.async_get_played_games()
+        )
+        unique_all_games = {
+            game["titleId"]: game for game in played_games + purchased_games
+        }.values()
+        
+        self._psn_client.cacheGames(unique_all_games)
+
         return [game_parser(game) for game in unique_all_games]
+
+    async def prepare_achievements_context(self, game_ids: List[str]) -> Any:
+        await self._http_client.initToken()
+        await self._psn_client.async_get_games_with_trophies("me")
+        return await super().prepare_achievements_context(game_ids)
+
+    async def get_unlocked_achievements(
+        self, game_id: str, context: Any
+    ) -> List[Achievement]:
+        # Récupération des trophées
+        # si besoin self._user_id
+        return await self._psn_client.async_get_game_trophies("me", game_id)
 
     async def shutdown(self):
         await self._http_client.close()

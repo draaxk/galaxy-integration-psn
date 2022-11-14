@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{cc1a733d-2890-4b0f-bf65-c1aa957a350c}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>src\plugin.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>Global|PythonCore|3.7</InterpreterId>
+    <TestFramework>Pytest</TestFramework>
+    <IsWindowsApplication>True</IsWindowsApplication>
+    <PublishUrl>C:\Users\NowNow\AppData\Local\GOG.com\Galaxy\plugins\installed\psn_38087aea-3c30-439f-867d-ddf9fae8fe6a</PublishUrl>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include=".github\ISSUE_TEMPLATE\bug_report.md" />
+    <Content Include=".gitignore" />
+    <Content Include="current_version.json" />
+    <Content Include="pytest.ini" />
+    <Content Include="README.md" />
+    <Content Include="requirements\app.txt" />
+    <Content Include="requirements\dev.txt" />
+    <Content Include="__pycache__\beautifulsoup4-4.11.1.dist-info\INSTALLER" />
+    <Content Include="__pycache__\beautifulsoup4-4.11.1.dist-info\METADATA" />
+    <Content Include="__pycache__\beautifulsoup4-4.11.1.dist-info\RECORD" />
+    <Content Include="__pycache__\beautifulsoup4-4.11.1.dist-info\REQUESTED" />
+    <Content Include="__pycache__\beautifulsoup4-4.11.1.dist-info\top_level.txt" />
+    <Content Include="__pycache__\beautifulsoup4-4.11.1.dist-info\WHEEL" />
+    <Content Include="__pycache__\bs4\builder\__pycache__\_html5lib.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\builder\__pycache__\_htmlparser.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\builder\__pycache__\_lxml.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\builder\__pycache__\__init__.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_builder.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_builder_registry.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_dammit.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_docs.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_element.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_formatter.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_html5lib.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_htmlparser.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_lxml.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_navigablestring.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_pageelement.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_soup.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_tag.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\test_tree.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\tests\__pycache__\__init__.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\__pycache__\dammit.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\__pycache__\diagnose.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\__pycache__\element.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\__pycache__\formatter.cpython-310.pyc" />
+    <Content Include="__pycache__\bs4\__pycache__\__init__.cpython-310.pyc" />
+    <Content Include="__pycache__\certifi-2022.9.24.dist-info\INSTALLER" />
+    <Content Include="__pycache__\certifi-2022.9.24.dist-info\LICENSE" />
+    <Content Include="__pycache__\certifi-2022.9.24.dist-info\METADATA" />
+    <Content Include="__pycache__\certifi-2022.9.24.dist-info\RECORD" />
+    <Content Include="__pycache__\certifi-2022.9.24.dist-info\REQUESTED" />
+    <Content Include="__pycache__\certifi-2022.9.24.dist-info\top_level.txt" />
+    <Content Include="__pycache__\certifi-2022.9.24.dist-info\WHEEL" />
+    <Content Include="__pycache__\certifi\cacert.pem" />
+    <Content Include="__pycache__\certifi\py.typed" />
+    <Content Include="__pycache__\certifi\__pycache__\core.cpython-310.pyc" />
+    <Content Include="__pycache__\certifi\__pycache__\__init__.cpython-310.pyc" />
+    <Content Include="__pycache__\certifi\__pycache__\__main__.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy.plugin.api-0.69.dist-info\INSTALLER" />
+    <Content Include="__pycache__\galaxy.plugin.api-0.69.dist-info\LICENSE" />
+    <Content Include="__pycache__\galaxy.plugin.api-0.69.dist-info\METADATA" />
+    <Content Include="__pycache__\galaxy.plugin.api-0.69.dist-info\RECORD" />
+    <Content Include="__pycache__\galaxy.plugin.api-0.69.dist-info\REQUESTED" />
+    <Content Include="__pycache__\galaxy.plugin.api-0.69.dist-info\top_level.txt" />
+    <Content Include="__pycache__\galaxy.plugin.api-0.69.dist-info\WHEEL" />
+    <Content Include="__pycache__\galaxy\api\__pycache__\consts.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\api\__pycache__\errors.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\api\__pycache__\importer.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\api\__pycache__\jsonrpc.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\api\__pycache__\plugin.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\api\__pycache__\types.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\api\__pycache__\__init__.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\unittest\__pycache__\mock.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\unittest\__pycache__\__init__.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\__pycache__\http.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\__pycache__\proc_tools.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\__pycache__\reader.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\__pycache__\registry_monitor.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\__pycache__\task_manager.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\__pycache__\tools.cpython-310.pyc" />
+    <Content Include="__pycache__\galaxy\__pycache__\__init__.cpython-310.pyc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\cache.py" />
+    <Compile Include="src\http_client.py" />
+    <Compile Include="src\parsers.py" />
+    <Compile Include="src\plugin.py" />
+    <Compile Include="src\psn_client.py" />
+    <Compile Include="src\psn_trophies.py" />
+    <Compile Include="src\psn_types.py" />
+    <Compile Include="src\serialization.py" />
+    <Compile Include="src\version.py" />
+    <Compile Include="tests\async_mock.py" />
+    <Compile Include="tests\conftest.py" />
+    <Compile Include="tests\integration_test.py" />
+    <Compile Include="tests\test_authentication.py" />
+    <Compile Include="tests\test_data.py" />
+    <Compile Include="tests\test_owned_games.py" />
+    <Compile Include="tests\test_parsers.py" />
+    <Compile Include="tests\test_psn_client.py" />
+    <Compile Include="tests\test_subscription.py" />
+    <Compile Include="tests\test_subscriptions_games.py" />
+    <Compile Include="tests\test_user_info.py" />
+    <Compile Include="tests\__init__.py" />
+    <Compile Include="__pycache__\bs4\builder\_html5lib.py" />
+    <Compile Include="__pycache__\bs4\builder\_htmlparser.py" />
+    <Compile Include="__pycache__\bs4\builder\_lxml.py" />
+    <Compile Include="__pycache__\bs4\builder\__init__.py" />
+    <Compile Include="__pycache__\bs4\dammit.py" />
+    <Compile Include="__pycache__\bs4\diagnose.py" />
+    <Compile Include="__pycache__\bs4\element.py" />
+    <Compile Include="__pycache__\bs4\formatter.py" />
+    <Compile Include="__pycache__\bs4\tests\test_builder.py" />
+    <Compile Include="__pycache__\bs4\tests\test_builder_registry.py" />
+    <Compile Include="__pycache__\bs4\tests\test_dammit.py" />
+    <Compile Include="__pycache__\bs4\tests\test_docs.py" />
+    <Compile Include="__pycache__\bs4\tests\test_element.py" />
+    <Compile Include="__pycache__\bs4\tests\test_formatter.py" />
+    <Compile Include="__pycache__\bs4\tests\test_html5lib.py" />
+    <Compile Include="__pycache__\bs4\tests\test_htmlparser.py" />
+    <Compile Include="__pycache__\bs4\tests\test_lxml.py" />
+    <Compile Include="__pycache__\bs4\tests\test_navigablestring.py" />
+    <Compile Include="__pycache__\bs4\tests\test_pageelement.py" />
+    <Compile Include="__pycache__\bs4\tests\test_soup.py" />
+    <Compile Include="__pycache__\bs4\tests\test_tag.py" />
+    <Compile Include="__pycache__\bs4\tests\test_tree.py" />
+    <Compile Include="__pycache__\bs4\tests\__init__.py" />
+    <Compile Include="__pycache__\bs4\__init__.py" />
+    <Compile Include="__pycache__\certifi\core.py" />
+    <Compile Include="__pycache__\certifi\__init__.py" />
+    <Compile Include="__pycache__\certifi\__main__.py" />
+    <Compile Include="__pycache__\galaxy\api\consts.py" />
+    <Compile Include="__pycache__\galaxy\api\errors.py" />
+    <Compile Include="__pycache__\galaxy\api\importer.py" />
+    <Compile Include="__pycache__\galaxy\api\jsonrpc.py" />
+    <Compile Include="__pycache__\galaxy\api\plugin.py" />
+    <Compile Include="__pycache__\galaxy\api\types.py" />
+    <Compile Include="__pycache__\galaxy\api\__init__.py" />
+    <Compile Include="__pycache__\galaxy\http.py" />
+    <Compile Include="__pycache__\galaxy\proc_tools.py" />
+    <Compile Include="__pycache__\galaxy\reader.py" />
+    <Compile Include="__pycache__\galaxy\registry_monitor.py" />
+    <Compile Include="__pycache__\galaxy\task_manager.py" />
+    <Compile Include="__pycache__\galaxy\tools.py" />
+    <Compile Include="__pycache__\galaxy\unittest\mock.py" />
+    <Compile Include="__pycache__\galaxy\unittest\__init__.py" />
+    <Compile Include="__pycache__\galaxy\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".github\" />
+    <Folder Include=".github\ISSUE_TEMPLATE\" />
+    <Folder Include="requirements" />
+    <Folder Include="src" />
+    <Folder Include="tests" />
+    <Folder Include="__pycache__\" />
+    <Folder Include="__pycache__\beautifulsoup4-4.11.1.dist-info\" />
+    <Folder Include="__pycache__\bs4\" />
+    <Folder Include="__pycache__\bs4\builder\" />
+    <Folder Include="__pycache__\bs4\builder\__pycache__\" />
+    <Folder Include="__pycache__\bs4\tests\" />
+    <Folder Include="__pycache__\bs4\tests\__pycache__\" />
+    <Folder Include="__pycache__\bs4\__pycache__\" />
+    <Folder Include="__pycache__\certifi-2022.9.24.dist-info\" />
+    <Folder Include="__pycache__\certifi\" />
+    <Folder Include="__pycache__\certifi\__pycache__\" />
+    <Folder Include="__pycache__\galaxy.plugin.api-0.69.dist-info\" />
+    <Folder Include="__pycache__\galaxy\" />
+    <Folder Include="__pycache__\galaxy\api\" />
+    <Folder Include="__pycache__\galaxy\api\__pycache__\" />
+    <Folder Include="__pycache__\galaxy\unittest\" />
+    <Folder Include="__pycache__\galaxy\unittest\__pycache__\" />
+    <Folder Include="__pycache__\galaxy\__pycache__\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|3.7" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>

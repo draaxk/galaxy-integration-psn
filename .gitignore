@@ -5,5 +5,6 @@ plugin-psn.spec
 __pycache__/
 .idea/
 .vscode/
+.vs/
 .mypy_cache/
 .venv

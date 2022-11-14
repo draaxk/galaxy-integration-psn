@@ -1,7 +1,7 @@
 import logging
-
 import aiohttp
-from galaxy.api.errors import UnknownBackendResponse
+from urllib.parse import parse_qsl, urlsplit
+from galaxy.api.errors import AuthenticationRequired, InvalidCredentials, UnknownBackendResponse
 from galaxy.http import handle_exception, create_client_session
 
 OAUTH_LOGIN_REDIRECT_URL = "https://www.playstation.com/"
@@ -13,6 +13,17 @@ OAUTH_LOGIN_URL = "https://web.np.playstation.com/api/session/v1/signin" \
                   "&smcid=web:pdc"
 
 OAUTH_LOGIN_URL = OAUTH_LOGIN_URL.format(redirect_url=OAUTH_LOGIN_REDIRECT_URL)
+
+
+OAUTH_LOGIN_NPSSO = "https://ca.account.sony.com/api/v1/ssocookie"
+
+OAUTH_CODE_URL = "https://ca.account.sony.com/api/authz/v3/oauth/authorize" \
+                    "?access_type=offline" \
+                    "&client_id=ac8d161a-d966-4728-b0ea-ffec22f69edc" \
+                    "&redirect_uri=com.playstation.PlayStationApp://redirect" \
+                    "&response_type=code&scope=psn:mobile.v1 psn:clientapp"
+
+OAUTH_TOKEN_URL = "https://ca.account.sony.com/api/authz/v3/oauth/token"
 
 REFRESH_COOKIES_URL = OAUTH_LOGIN_URL
 
@@ -34,7 +45,6 @@ class CookieJar(aiohttp.CookieJar):
 
 
 class HttpClient:
-
     def __init__(self):
         self._cookie_jar = CookieJar()
         self._session = create_client_session(cookie_jar=self._cookie_jar)
@@ -47,16 +57,23 @@ class HttpClient:
             return await self._session.request(method, url, *args, **kwargs)
 
     async def get(self, url, *args, **kwargs):
-        silent = kwargs.pop('silent', False)
-        get_json = kwargs.pop('get_json', True)
+        silent = kwargs.pop("silent", False)
+        get_json = kwargs.pop("get_json", True)
         response = await self._request("GET", *args, url=url, **kwargs)
         try:
-            raw_response = '***' if silent else await response.text()
+            raw_response = "***" if silent else await response.text()
             logging.debug("Response for:\n{url}\n{data}".format(url=url, data=raw_response))
             return await response.json() if get_json else await response.text()
         except ValueError:
             logging.exception("Invalid response data for:\n{url}".format(url=url))
             raise UnknownBackendResponse()
+
+    async def getWithToken(self, url, *args, **kwargs):
+        if not self._access_token:
+            raise AuthenticationRequired()
+        headers = kwargs.setdefault("headers", {})
+        headers["authorization"] = "Bearer " + self._access_token
+        return await self.get(url=url, *args, **kwargs)
 
     async def post(self, url, *args, **kwargs):
         logging.debug("Sending data:\n{url}".format(url=url))
@@ -72,3 +89,53 @@ class HttpClient:
 
     async def refresh_cookies(self):
         await self.get(REFRESH_COOKIES_URL, silent=True, get_json=False)
+
+    async def initToken(self):
+        self._access_token = None
+        result = await self.get(OAUTH_LOGIN_NPSSO, get_json=True)
+        logging.debug(f"NPSSO: {result}")
+        try:
+            response = await self._request(
+                "GET",
+                url=OAUTH_CODE_URL,
+                cookies=result,
+                allow_redirects=False
+            )
+            location_params = urlsplit(response.headers["Location"])
+            logging.debug(f"Location: {location_params}")
+
+            location_query = dict(parse_qsl(location_params.query))
+            if "error" in location_query:
+                raise AuthenticationRequired(location_query)
+            logging.debug(f"Query: {location_query}")
+            
+            body = {
+                "code" : location_query["code"],
+                "redirect_uri" : "com.playstation.PlayStationApp://redirect",
+                "grant_type" : "authorization_code",
+                "token_format" : "jwt"
+            }
+            headers = {
+                "Content-Type" : "application/x-www-form-urlencoded",
+                "Authorization" : "Basic YWM4ZDE2MWEtZDk2Ni00NzI4LWIwZWEtZmZlYzIyZjY5ZWRjOkRFaXhFcVhYQ2RYZHdqMHY="
+            }
+            
+            resultToken = await self.post(url=OAUTH_TOKEN_URL, data=body, headers=headers)
+            if resultToken:  
+                json = await resultToken.json()
+                self._access_token = json["access_token"]
+                logging.debug(f"Token: {self._access_token}")
+            else:
+                logging.error(f"Unable to retreive access token for trophies")
+            resultToken.close()
+
+        except AuthenticationRequired as e:
+            raise InvalidCredentials(e.data)
+        except (KeyError, IndexError):
+            raise UnknownBackendResponse(str(response.headers))
+        finally:
+            if response:
+                response.close()
+
+
+
