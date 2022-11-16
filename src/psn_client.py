@@ -10,6 +10,7 @@ from galaxy.api.consts import LicenseType
 
 from parsers import PSNGamesParser
 from psn_types import GamePSN
+from psn_link_titles import psn_link_titles
 
 GAME_LIST_URL = (
     "https://web.np.playstation.com/api/graphql/v1/op"
@@ -187,30 +188,36 @@ class PSNClient:
         ps5Game = "trophy"
         gamePlatform = ""
         findGame : GamePSN = None
+        trophies : List[GamePSN] = []
 
         for game in self.games:
             if game.game_id == gameid:
                 findGame = game
                 gamePlatform = game.platform
+                titles: List[str] = [ game.game_title ]
+                for title in psn_link_titles:
+                    if game.game_title.upper() == title.gameTitle.upper() and game.platform.upper() == title.platform.upper():
+                        titles += title.alias
+
                 for g in self.gamesWithTrophies:
-                    if g.game_title == game.game_title and g.platform == game.platform:
-                        finalGameId = g.game_id
-                        if g.platform == "PS5":
-                             ps5Game = "trophy2"                             
-                        break;
+                    if g.platform.upper() == game.platform.upper():
+                        for t in titles:
+                            if g.game_title.upper() == t.upper() :
+                                finalGameId = g.game_id
+                                if g.platform.upper() == "PS5":
+                                    ps5Game = "trophy2"                             
+                                url = GAME_TROPHIES_URL.format(userAccountId=userid, gameUniqueId=finalGameId, ps5OrOld=ps5Game)
+                                logging.debug(f"Retrieve trophies for {findGame.game_title} ({g.game_title}) / {gameid}->{finalGameId}/{gamePlatform}: {url}")        
+                                response = await self._http_client.getWithToken(url)            
+                                trophies += trophies_parser(response, finalGameId, findGame.game_title, gamePlatform, gameid)
                 break;            
+
         if findGame is None :
             logging.debug(f"Unable to retrieve trophies for {gameid}")        
-            return []
         else :
             if finalGameId == findGame.game_id :
                 logging.debug(f"Unable to retrieve trophies for {findGame.game_title} ({findGame.game_id} / {findGame.platform})")     
-                return []
-            else :
-                url = GAME_TROPHIES_URL.format(userAccountId=userid, gameUniqueId=finalGameId, ps5OrOld=ps5Game)
-                logging.debug(f"Retrieve trophies for {findGame.game_title} / {gameid}->{finalGameId}/{gamePlatform}: {url}")        
-                response = await self._http_client.getWithToken(url)            
-                return trophies_parser(response, finalGameId, findGame.game_title, gamePlatform, gameid)
+        return trophies;
 
     async def async_get_games_with_trophies(self, userid: str):     
         def game_parser(model):   

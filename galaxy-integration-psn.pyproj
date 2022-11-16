@@ -101,6 +101,7 @@
     <Compile Include="src\parsers.py" />
     <Compile Include="src\plugin.py" />
     <Compile Include="src\psn_client.py" />
+    <Compile Include="src\psn_link_titles.py" />
     <Compile Include="src\psn_trophies.py" />
     <Compile Include="src\psn_types.py" />
     <Compile Include="src\serialization.py" />
