@@ -19,9 +19,9 @@ OAUTH_LOGIN_NPSSO = "https://ca.account.sony.com/api/v1/ssocookie"
 
 OAUTH_CODE_URL = "https://ca.account.sony.com/api/authz/v3/oauth/authorize" \
                     "?access_type=offline" \
-                    "&client_id=ac8d161a-d966-4728-b0ea-ffec22f69edc" \
-                    "&redirect_uri=com.playstation.PlayStationApp://redirect" \
-                    "&response_type=code&scope=psn:mobile.v1 psn:clientapp"
+                    "&client_id=09515159-7237-4370-9b40-3806e67c0891" \
+                    "&redirect_uri=com.scee.psxandroid.scecompcall://redirect" \
+                    "&response_type=code&scope=psn:mobile.v2.core psn:clientapp"
 
 OAUTH_TOKEN_URL = "https://ca.account.sony.com/api/authz/v3/oauth/token"
 
@@ -111,13 +111,13 @@ class HttpClient:
             
             body = {
                 "code" : location_query["code"],
-                "redirect_uri" : "com.playstation.PlayStationApp://redirect",
+                "redirect_uri" : "com.scee.psxandroid.scecompcall://redirect",
                 "grant_type" : "authorization_code",
                 "token_format" : "jwt"
             }
             headers = {
                 "Content-Type" : "application/x-www-form-urlencoded",
-                "Authorization" : "Basic YWM4ZDE2MWEtZDk2Ni00NzI4LWIwZWEtZmZlYzIyZjY5ZWRjOkRFaXhFcVhYQ2RYZHdqMHY="
+                "Authorization" : "Basic MDk1MTUxNTktNzIzNy00MzcwLTliNDAtMzgwNmU2N2MwODkxOnVjUGprYTV0bnRCMktxc1A="
             }
             
             resultToken = await self.post(url=OAUTH_TOKEN_URL, data=body, headers=headers)
@@ -136,6 +136,3 @@ class HttpClient:
         finally:
             if response:
                 response.close()
-
-
-
